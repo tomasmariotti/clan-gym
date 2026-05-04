@@ -1,7 +1,5 @@
 import { createRouter, useRouter } from "@tanstack/react-router";
 import { routeTree } from "./routeTree.gen";
-import { createRoot } from "react-dom/client";
-import { StrictMode } from "react";
 
 function DefaultErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
   const router = useRouter();
@@ -56,23 +54,14 @@ function DefaultErrorComponent({ error, reset }: { error: Error; reset: () => vo
   );
 }
 
-const router = createRouter({
-  routeTree,
-  context: {},
-  scrollRestoration: true,
-  defaultPreloadStaleTime: 0,
-  defaultErrorComponent: DefaultErrorComponent,
-});
+export const getRouter = () => {
+  const router = createRouter({
+    routeTree,
+    context: {},
+    scrollRestoration: true,
+    defaultPreloadStaleTime: 0,
+    defaultErrorComponent: DefaultErrorComponent,
+  });
 
-declare module "@tanstack/react-router" {
-  interface Register {
-    router: typeof router;
-  }
-}
-
-const rootElement = document.getElementById("root")!;
-createRoot(rootElement).render(
-  <StrictMode>
-    <router.RouterProvider />
-  </StrictMode>
-);
+  return router;
+};
